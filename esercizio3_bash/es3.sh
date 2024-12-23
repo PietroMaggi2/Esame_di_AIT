@@ -7,8 +7,11 @@ function file_count (){		#Questa funzione conta il numero di file presenti nella
 				#e le stampo a schermo con wc -l
 }
 
-a=$((1 + RANDOM % 10))		#Si generano due numeri interi casuali fra 1 e 10 per generare i file e le directory per il test
-b=$((1 + RANDOM % 10))
+a=$((1 + $RANDOM % 10))		#Si generano due numeri interi casuali fra 1 e 10 per generare i file e le directory per il test
+b=$((1 + $RANDOM % 10))
+
+rm file*
+rmdir dir*
 
 for (( i = 1; i < $a; i++ ))	#Creazione dei file
 do
