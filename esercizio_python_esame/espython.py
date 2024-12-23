@@ -137,10 +137,10 @@ posz = data[7]          #Posizione z. Misurata in ckpc/h
 #PRIMO PUNTO: Grafico della massa di materia oscura in funzione di quella barionica in scala lineare e logaritmica (con fit lineare)
 
 baryonic_mass = gas_mass + stellar_mass
-mask = np.where(baryonic_mass != 0.0)
+mask = np.where(baryonic_mass != 0.0)[0]
 barmass_fit = baryonic_mass[mask]
 dmmass_fit = dm_mass[mask]
-mask = np.where(dmmass_fit != 0.0)
+mask = np.where(dmmass_fit != 0.0)[0]
 barmass_fit = barmass_fit[mask]
 dmmass_fit = dmmass_fit[mask]
 
@@ -183,7 +183,7 @@ subplot(posx,posy,posz,sizes,line_colors)
 
 #QUINTO PUNTO: Grafico della massa del buco nero corrispondente alla struttura, in funzione della massa stellare
 
-mask = np.where(bh_mass > 8.0*10**(-5))
+mask = np.where(bh_mass > 8.0*10**(-5))[0]
 bhmass_fit = bh_mass[mask]
 stellarmass_fit = stellar_mass[mask]
 
@@ -199,3 +199,28 @@ stellarmass_fit = 10**(stellarmass_fit)
 ybh = 10**(ybh)
 
 plot_con_fit(stellar_mass,bh_mass,stellarmass_fit,ybh,'Massa stellare','Massa del buco nero','10^10 Msun/h','10^10 Msun/h','log','log','.','b','r','FiguraBH_Massastellare.png')
+
+#SESTO PUNTO: Istogramma bidimensionale 
+
+mask = np.where(total_mass > 2.0)[0]    #Questa condizione permette di ottenere solo 5 aloni. Se mettessi la condizione > 0.307 ne ot                                       terrei 28
+totmass_hist = total_mass[mask]
+posx_hist = posx[mask]
+posy_hist = posy[mask]
+posz_hist = posz[mask]
+
+distance = [[] for i in range(len(totmass_hist))]
+
+#print(distance)
+for i in range(len(totmass_hist)):
+    distance[i] = np.sqrt(np.square(posx - posx_hist[i]) + np.square(posy - posy_hist[i]) + np.square(posz - posz_hist[i]))
+    fig, ax = plt.subplots()
+    h[i] = ax.hist2d(total_mass,distance[0],bins=100)
+#print(distance)
+
+fig, ax = plt.subplots()
+fig.set_size_inches(18,10)
+ax.hist2d(total_mass,distance[0],bins=100)
+#ax.set_xticks(bins)
+fig.savefig('prova.png')
+
+
