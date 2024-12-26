@@ -12,8 +12,8 @@ done
 echo Somma ottenuta con il comando awk:
 
 awk '{ sum += $1 } END { print sum }' file1	#Somma fatta con il comando awk
-
-let sum=n**2/2+n/2				#Somma fatta con la formula di Gauss
+let m=n+1
+let sum=n*m/2					#Somma fatta con la formula di Gauss
 echo Somma ottenuta con la formula di Gauss:
 echo $sum
 

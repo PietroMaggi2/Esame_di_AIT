@@ -32,7 +32,7 @@ def plot(x,y,nomex,nomey,udmx,udmy,scalax,scalay,marker,colore,nomefigura):
     ax.tick_params(axis='both', right=True, top=True, direction='in')
     fig.savefig("{}".format(nomefigura))
 
-def plot_con_fit(x,y,xfit,yfit,nomex,nomey,udmx,udmy,scalax,scalay,marker,colore,colorefit,nomefigura):
+def plot_con_fit(x,y,xfit,yfit,mfit,qfit,nomex,nomey,udmx,udmy,scalax,scalay,marker,colore,colorefit,nomefigura):
     '''
     Questa funzione permette di produrre un grafico in base alle informazioni date come parametri
     ---------------------------------------------------------------------------------------------
@@ -41,6 +41,8 @@ def plot_con_fit(x,y,xfit,yfit,nomex,nomey,udmx,udmy,scalax,scalay,marker,colore
     y: Array di dati da graficare sull'asse delle y
     xfit: Array dei dati dell'asse x del fit lineare
     yfit: Array di dati dell'asse y fit lineare
+    mfit: Il coefficiente angolare del fit lineare
+    qfit: L'intercetta del fit lineare
     nomex: Nome dell'asse delle x
     nomey: Nome dell'asse delle y
     udmx: Unità di misura delle x
@@ -60,8 +62,9 @@ def plot_con_fit(x,y,xfit,yfit,nomex,nomey,udmx,udmy,scalax,scalay,marker,colore
     ax.set_xscale('{}'.format(scalax))
     ax.set_yscale('{}'.format(scalay))
     ax.scatter(x, y, marker='{}'.format(marker), color='{}'.format(colore))
-    ax.plot(xfit,yfit,color='{}'.format(colorefit))
+    ax.plot(xfit,yfit,color='{}'.format(colorefit),label='m= {}, q= {}'.format(round(mfit,3),round(qfit,3)))
     ax.tick_params(axis='both', right=True, top=True, direction='in')
+    ax.legend(loc='upper left')
     fig.savefig("{}".format(nomefigura))
 
 def histo(x,nomehist,nomefigura):
@@ -121,6 +124,22 @@ def subplot(x,y,z,grandezze,colori):
     fig.text(0.55,0.3,'NOTA: La grandezza dei punti scala con la massa stellare. Il colore scala con la massa di gas', fontsize = 12)
     fig.savefig("proiezioni.png")
 
+def istbid(x,y,binsx,binsy,titolo,nome):
+    fig,ax = plt.subplots()
+    ax.set_title('Istogramma bidimensionale {}'.format(titolo), fontsize=20)
+    ax.set_xlabel('Logaritmo in base 10 delle masse', fontsize=15)
+    ax.set_ylabel('Distanze in [ckpc/h]', fontsize=15)
+    fig.set_size_inches(18,10)
+    h = ax.hist2d(x,y,bins=[binsx,binsy],cmap='Blues')
+    ax.set_xticks(h[1])
+    ax.set_yticks(h[2])
+    ax.tick_params(axis='x',labelrotation=90)
+    fig.savefig(nome)
+    #print(min(h[1]))
+    #print(max(h[1]))
+    #print(min(h[2]))
+    #print(max(h[2]))
+
 #SCRIPT PRINCIPALE
 
 data_filename = '/home/pietromg/esame/Esame_di_AIT/esercizio_python_esame/file2_Groups_AGN-wWU_500Mpc_Data.txt'
@@ -151,7 +170,7 @@ ydm= mdm*barmass_fit + qdm
 barmass_fit = 10**(barmass_fit)
 ydm = 10**(ydm)
 
-plot_con_fit(baryonic_mass,dm_mass,barmass_fit,ydm,'Massa barionica','Massa di materia oscura','10^10 Msun/h','10^10 Msun/h','log','log','x','r','b','FiguraDM_MassaBarionica_fitlineare.png')
+plot_con_fit(baryonic_mass,dm_mass,barmass_fit,ydm,mdm,qdm,'Massa barionica','Massa di materia oscura','10^10 Msun/h','10^10 Msun/h','log','log','x','r','b','FiguraDM_MassaBarionica_fitlineare.png')
 
 #SECONDO PUNTO: Grafico della distanza delle strutture dalla più massiva
 #Per visualizzare bene la distribuzione mettere l'asse y in scala logaritmica. L'asse x può essere lasciato in scala lineare.
@@ -198,29 +217,33 @@ ybh = mbh*stellarmass_fit + qbh
 stellarmass_fit = 10**(stellarmass_fit)
 ybh = 10**(ybh)
 
-plot_con_fit(stellar_mass,bh_mass,stellarmass_fit,ybh,'Massa stellare','Massa del buco nero','10^10 Msun/h','10^10 Msun/h','log','log','.','b','r','FiguraBH_Massastellare.png')
+plot_con_fit(stellar_mass,bh_mass,stellarmass_fit,ybh,mbh,qbh,'Massa stellare','Massa del buco nero','10^10 Msun/h','10^10 Msun/h','log','log','.','b','r','FiguraBH_Massastellare.png')
 
-#SESTO PUNTO: Istogramma bidimensionale 
+#SESTO PUNTO: Istogramma bidimensionale
+gas_mass2 = np.where(gas_mass == 0.0, 10**(-5), gas_mass)
+mask = np.where(gas_mass > 0.307)[0]
+gas_mass6 = gas_mass[mask]
+posx6 = posx[mask]
+posy6 = posy[mask]
+posz6 = posz[mask]
+distance6 = [[] for i in range(len(gas_mass6))]
 
-mask = np.where(total_mass > 2.0)[0]    #Questa condizione permette di ottenere solo 5 aloni. Se mettessi la condizione > 0.307 ne ot                                       terrei 28
-totmass_hist = total_mass[mask]
-posx_hist = posx[mask]
-posy_hist = posy[mask]
-posz_hist = posz[mask]
+for i in range(len(gas_mass6)):
+    distance6[i] = np.sqrt(np.square(posx-posx[i]) + np.square(posy - posy[i]) + np.square(posz - posz[i]))
 
-distance = [[] for i in range(len(totmass_hist))]
+largdist = np.amax(distance6)/50
+largmass = (max(np.log10(total_mass))-min(np.log10(total_mass)))/50
+binsdist = np.zeros(51)
+binsmass = np.zeros(51)
+for i in range(len(binsdist)):
+    binsdist[i] = i*largdist
+    binsmass[i] = min(np.log10(total_mass)) + i*largmass
 
-#print(distance)
-for i in range(len(totmass_hist)):
-    distance[i] = np.sqrt(np.square(posx - posx_hist[i]) + np.square(posy - posy_hist[i]) + np.square(posz - posz_hist[i]))
-    fig, ax = plt.subplots()
-    h[i] = ax.hist2d(total_mass,distance[0],bins=100)
-#print(distance)
+for i in range(len(gas_mass6)):    
+    istbid(np.log10(total_mass),distance6[i],binsmass,binsdist,'dell\'alone con massa di gas {} x 10^10 Msun/h'.format(gas_mass6[i]),'ist_bid_alone_{}.png'.format(i+1))
 
-fig, ax = plt.subplots()
-fig.set_size_inches(18,10)
-ax.hist2d(total_mass,distance[0],bins=100)
-#ax.set_xticks(bins)
-fig.savefig('prova.png')
+masstot = np.repeat(np.log10(total_mass),5)
+disttot = np.concatenate((distance6[0],distance6[1],distance6[2],distance6[3],distance6[4]))
+istbid(masstot,disttot,binsmass,binsdist,'totale','ist_bid_totale.png')
 
-
+#h[0] sono i valori dell'istogramma delle masse. h[1] sono gli edges delle masse. h[2] sono gli edges delle distanze.

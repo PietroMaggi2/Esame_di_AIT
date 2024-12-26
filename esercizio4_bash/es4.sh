@@ -5,7 +5,7 @@ function file_count {		#Questa funzione restituisce il numero di file contenuti 
 	if [ -d $dire ]		#Controllo sul fatto che il parametro sia effettivamente il path di una directory
 	then
 		echo $dire:	
-        	ls -l $1|grep "^-"|wc -l
+        	ls -l $dire|grep "^-"|wc -l
 	else
 		echo L\'elemento passato come argomento non è una directory!
 		exit 1

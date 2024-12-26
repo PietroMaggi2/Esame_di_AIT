@@ -1,5 +1,0 @@
-# control_of_memory	requirements
-BoundaryLayerFactor	3.0
-MaxMem 			1024
-MaxMemPerparticle	240
-PredPeakFactor		0.8
