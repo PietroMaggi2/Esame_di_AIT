@@ -13,9 +13,7 @@ Gli esercizi che ho scelto di svolgere sono i seguenti:
 
 \- L'esercizio di Python proposto, il cui script è contenuto nella directory "esercizio\_python\_esame".
 
-NOTA: Gli esercizi di Bash vanno eseguito con il comando ./nomefile.sh
-      
-      L'esercizio di Python va eseguito con il comando python nomefile.py
+NOTA: Gli esercizi di Bash vanno eseguito con il comando ./nomefile.sh, mentre l'esercizio di Python va eseguito con il comando python nomefile.py
 
 ## Esercizio 3 di Bash
 Il terzo esercizio di Bash proposto richiede di contare il numero di files, non directories, presenti nella directory corrente. Per far questo suggerisce di creare una funzione file\_count che, attraverso l'utilizzo dei comandi ls, grep e wc, esegue la richiesta.
