@@ -1,5 +1,5 @@
 # Esame\_di\_AIT
-Buongiorno! Questa repository GitHub contiene gli script degli esercizi svolti per l'esame di Abilità Informatiche e Telematiche di Pietro Maggi.
+Buongiorno! Questo repository GitHub contiene gli script degli esercizi svolti per l'esame di Abilità Informatiche e Telematiche di Pietro Maggi.
 
 Gli esercizi che ho scelto di svolgere sono i seguenti:
 
