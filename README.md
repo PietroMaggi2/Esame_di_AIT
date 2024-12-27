@@ -21,11 +21,11 @@ Il terzo esercizio di Bash proposto richiede di contare il numero di files, non 
 
 Lo script è stato realizzato nel file "es3.sh".
 
-Visto che lo script viene eseguito in una cartella di prova ho deciso di far generare un numero casuale compreso fra 1 e 10 di files e directories allo script (questi sono identificati dal nome filei, dirj, con i e j che vanno da 1 al numero random generato). Per rendere poi completamente indipendenti le varie esecuzioni ho anche inserito l'eliminazione dei files/directories di prova all'inizio di ogni esecuzione.
+Visto che lo script viene eseguito in una cartella di prova ho deciso di far generare un numero casuale compreso fra 1 e 10 di files e directories allo script (questi sono identificati dal nome filei, dirj, con i e j che vanno da 0 al numero random generato - 1). Per rendere poi completamente indipendenti le varie esecuzioni ho anche inserito l'eliminazione dei files/directories di prova all'inizio di ogni esecuzione.
 
 Il numero di file presenti (che in questo caso corrisponderà al numero casuale generato + 1, lo script) verrà stampato a schermo con la dicitura "il numero di file presenti in questa directory è:"
 
-NOTA: Alla prima esecuzione (e quando il numero casuale generato è 0), vista l'assenza di files/directories di prova apparirà il seguente warning:
+NOTA: Alla prima esecuzione, vista l'assenza di files/directories di prova apparirà il seguente warning:
 rm: cannot remove 'file\*': No such file or directory   
 rmdir: failed to remove 'dir\*': No such file or directory
 
@@ -91,7 +91,7 @@ Il fit lineare ottenuto non sembra interpolare bene i dati in tutto il range di 
 ### Secondo punto
 Il secondo punto dell'esercizio chiede di concentrarsi sulla struttura più massiva e di valutare le distanze di tutti gli altri aloni da questa. Dopo aver fatto ciò si grafica l'andamento della massa della struttura in funzione di questa distanza. 
 
-NOTA: Anche in questo caso, come prima, per poter apprezzarea a pieno la distribuzione delle strutture è necessario mettere l'asse delle masse in scala logaritmica. L'asse delle distanze risulta sensato sia in scala logaritmica che in scala lineare. Per questo motivo ho scelto di realizzare due grafici, uno in scala log-lin, salvato nel file "FiguraDistanza\_Massatotale\_log\_lin.png" e uno in scala log-log, salvato nel file "FiguraDistanza\_Massatotale\_log\_log.png".
+NOTA: Anche in questo caso, come prima, per poter apprezzare a pieno la distribuzione delle strutture è necessario mettere l'asse delle masse in scala logaritmica. L'asse delle distanze risulta sensato sia in scala logaritmica che in scala lineare. Per questo motivo ho scelto di realizzare due grafici, uno in scala log-lin, salvato nel file "FiguraDistanza\_Massatotale\_log\_lin.png" e uno in scala log-log, salvato nel file "FiguraDistanza\_Massatotale\_log\_log.png".
 
 ### Terzo punto
 Il terzo punto dell'esercizio chiede di realizzare un istogramma, salvato nel file "istogramma.png".
