@@ -2,10 +2,15 @@
 Buongiorno! Questa repository GitHub contiene gli script degli esercizi svolti per l'esame di Abilità Informatiche e Telematiche di Pietro Maggi.
 
 Gli esercizi che ho scelto di svolgere sono i seguenti:
+
 \- Il terzo esercizio di Bash, il cui script è contenuto nella directory "esercizio3\_bash";
+
 \- Il quarto esercizio di Bash, il cui script è contenuto nella directory "esercizio4\_bash";
+
 \- Il quinto esercizio di Bash, il cui script è contenuto nella directory "esercizio5\_bash";
+
 \- Il sesto esercizio di Bash, il cui script è contenuto nella directory "esercizio6\_bash";
+
 \- L'esercizio di Python proposto, il cui script è contenuto nella directory "esercizio\_python\_esame".
 
 NOTA: Gli esercizi di Bash vanno eseguito con il comando ./nomefile.sh
