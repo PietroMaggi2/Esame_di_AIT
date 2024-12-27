@@ -14,6 +14,7 @@ Gli esercizi che ho scelto di svolgere sono i seguenti:
 \- L'esercizio di Python proposto, il cui script è contenuto nella directory "esercizio\_python\_esame".
 
 NOTA: Gli esercizi di Bash vanno eseguito con il comando ./nomefile.sh
+      
       L'esercizio di Python va eseguito con il comando python nomefile.py
 
 ## Esercizio 3 di Bash
