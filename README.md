@@ -8,17 +8,18 @@ Gli esercizi che ho scelto di svolgere sono i seguenti:
 \- Il sesto esercizio di Bash, il cui script è contenuto nella directory "esercizio6\_bash";
 \- L'esercizio di Python proposto, il cui script è contenuto nella directory "esercizio\_python\_esame".
 
+NOTA: Gli esercizi di Bash vanno eseguito con il comando ./nomefile.sh
+      L'esercizio di Python va eseguito con il comando python nomefile.py
+
 ## Esercizio 3 di Bash
 Il terzo esercizio di Bash proposto richiede di contare il numero di files, non directories, presenti nella directory corrente. Per far questo suggerisce di creare una funzione file\_count che, attraverso l'utilizzo dei comandi ls, grep e wc, esegue la richiesta.
 Lo script è stato realizzato nel file "es3.sh".
 Visto che lo script viene eseguito in una cartella di prova ho deciso di far generare un numero casuale compreso fra 1 e 10 di files e directories allo script (questi sono identificati dal nome filei, dirj, con i e j che vanno da 1 al numero random generato). Per rendere poi completamente indipendenti le varie esecuzioni ho anche inserito l'eliminazione dei files/directories di prova all'inizio di ogni esecuzione.
 Il numero di file presenti (che in questo caso corrisponderà al numero casuale generato + 1, lo script) verrà stampato a schermo con la dicitura "il numero di file presenti in questa directory è:"
 
-NOTA: Alla prima esecuzione, vista l'assenza di files/directories di prova apparirà il seguente warning:
+NOTA: Alla prima esecuzione (e quando il numero casuale generato è 0), vista l'assenza di files/directories di prova apparirà il seguente warning:
 rm: cannot remove 'file\*': No such file or directory   
 rmdir: failed to remove 'dir\*': No such file or directory
-
-Dalla seconda esecuzione in poi questo warning sarà risolto.
 
 ## Esercizio 4 di Bash
 Il quarto esercizio di Bash proposto è una continuazione del terzo esercizio. In particolare, viene richiesto di modificare la funzione file\_count, permettendo di passare come argomento una directory diversa da quella corrente dove andare a fare il conteggio dei file.
@@ -47,7 +48,7 @@ PredPeakFactor          0.8
 
 Il file contenente questo testo è stato chiamato file1 e viene svuotato all'inizio dello script per rendere indipendenti le varie esecuzioni del programma.
 Lo script è stato realizzato nel file "es6.sh".
-Questo file viene poi modificato e risalvato come richiesto utilizzando il comando awk 
+Questo file viene poi modificato e risalvato come richiesto utilizzando il comando awk (in particolare 512, il valore di MaxMem, viene sostituito con 1024). 
 
 ## Esercizio di Python
 L'esercizio di Python proposto si articola in molti punti che verranno trattati singolarmente qui di seguito.
@@ -72,14 +73,14 @@ L'istogramma riporta la distribuzione di massa di materia oscura degli aloni, ca
 
 ### Quarto punto
 Il quarto punto chiede di realizzare tre plot in un'unica figura, salvata nel file "proiezioni.png".
-Questi tre plot riportano la distribuzione proiettata degli aloni sui tre piani bidimensionali, XY, YZ, XZ. Per differenziare le caratteristiche delle strutture sui grafici ho fatto variare il colore dei punti in funzione della massa di gas delle strutture, e la grandezza di questi in funzione della massa stellare.
+Questi tre plot riportano la distribuzione proiettata degli aloni sui tre piani bidimensionali, XY, ZY, XZ. Per differenziare le caratteristiche delle strutture sui grafici ho fatto variare il colore dei punti in funzione della massa di gas delle strutture, e la grandezza di questi in funzione della massa stellare.
 
 ### Quinto punto
-Il quinto punto richiede di graficare la massa del buco nero centrale della struttura in funzione della massa stellare. Questo grafico viene riportato nel file "FiguraBH\_Massastellare.png". 
+Il quinto punto richiede di graficare la massa del buco nero centrale della struttura in funzione della massa stellare, quando la prima è maggiore di 8 x 10^5 Msun/h. Questo grafico viene riportato nel file "FiguraBH\_Massastellare.png". 
 
 NOTA: Come prima, vista la distribuzione delle masse in diversi ordini di grandezza gli assi vengono riportati in scala logaritmica.
 
-Inoltre, l'esercizio chiede di realizzare un fit lineare dei dati con massa del buco nero superiore a 8 x 10^5 Msun/h. In questo caso il fit risulta sensato, indicando la presenza di una correlazione lineare fra massa del buco nero centrale e massa stellare totale.
+Inoltre, l'esercizio chiede di realizzare un fit lineare dei dati. Il fit risulta sensato, indicando la presenza di una correlazione lineare fra massa del buco nero centrale e massa stellare totale in questo range. Questo potrebbe indicare che la formazione stellare nell'intera struttura è perturbata dal buco nero supermassivo centrale.
 
 ### Sesto punto
 L'ultimo punto dell'esercizio di Python chiede di realizzare degli istogrammi bidimensionali, riportando sull'asse delle x la distribuzione di massa totale delle strutture, e sull'asse delle y la distanza di queste dagli aloni con massa di gas superiore a 3.07 x 10^9 Msun/h. in totale sono quindi generati 5 istogrammi, uno per ogni alone (salvati nei file 'ist\_bid\_alone\_i.png', con i che va da 1 a 5) più uno ottenuto dalla somma dei precedenti, salvato nel file 'ist\_bid\_totale.png'.

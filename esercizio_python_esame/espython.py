@@ -125,20 +125,28 @@ def subplot(x,y,z,grandezze,colori):
     fig.savefig("proiezioni.png")
 
 def istbid(x,y,binsx,binsy,titolo,nome):
+    '''
+    Questa funzione restituisce l'istogramma bidimensionale degli array x e y
+    -------------------------------------------------------------------------
+    Parametri:
+    x: Array da istogrammare sull'asse x
+    y: Array da istogrammare sull'asse y
+    binsx: Estremi dei bins sull'asse x
+    binsy: Estremi dei bins sull'asse y
+    titolo: Titolo del grafico
+    nome: Nome del file dove salvare il grafico
+    '''
     fig,ax = plt.subplots()
     ax.set_title('Istogramma bidimensionale {}'.format(titolo), fontsize=20)
-    ax.set_xlabel('Logaritmo in base 10 delle masse', fontsize=15)
+    ax.set_xlabel('Massa totale [10^10 Msun/h] in log10', fontsize=15)
     ax.set_ylabel('Distanze in [ckpc/h]', fontsize=15)
     fig.set_size_inches(18,10)
     h = ax.hist2d(x,y,bins=[binsx,binsy],cmap='Blues')
+    #h[0] sono i valori dell'istogramma delle masse. h[1] sono gli edges delle masse. h[2] sono gli edges delle distanze.
     ax.set_xticks(h[1])
     ax.set_yticks(h[2])
     ax.tick_params(axis='x',labelrotation=90)
     fig.savefig(nome)
-    #print(min(h[1]))
-    #print(max(h[1]))
-    #print(min(h[2]))
-    #print(max(h[2]))
 
 #SCRIPT PRINCIPALE
 
@@ -155,73 +163,72 @@ posz = data[7]          #Posizione z. Misurata in ckpc/h
 
 #PRIMO PUNTO: Grafico della massa di materia oscura in funzione di quella barionica in scala lineare e logaritmica (con fit lineare)
 
-baryonic_mass = gas_mass + stellar_mass
-mask = np.where(baryonic_mass != 0.0)[0]
+baryonic_mass = gas_mass + stellar_mass         #Calcolo della massa barionica
+mask = np.where(baryonic_mass != 0.0)[0]        #Elimino i punti problematici
 barmass_fit = baryonic_mass[mask]
 dmmass_fit = dm_mass[mask]
 mask = np.where(dmmass_fit != 0.0)[0]
 barmass_fit = barmass_fit[mask]
 dmmass_fit = dmmass_fit[mask]
-
 barmass_fit = np.log10(barmass_fit)
 dmmass_fit = np.log10(dmmass_fit)
-mdm,qdm = np.polyfit(barmass_fit,dmmass_fit,1)
+mdm,qdm = np.polyfit(barmass_fit,dmmass_fit,1)  #Fit lineare dei dati
 ydm= mdm*barmass_fit + qdm
 barmass_fit = 10**(barmass_fit)
+dmmass_fit = 10**(dmmass_fit)
 ydm = 10**(ydm)
 
-plot_con_fit(baryonic_mass,dm_mass,barmass_fit,ydm,mdm,qdm,'Massa barionica','Massa di materia oscura','10^10 Msun/h','10^10 Msun/h','log','log','x','r','b','FiguraDM_MassaBarionica_fitlineare.png')
+plot_con_fit(barmass_fit,dmmass_fit,barmass_fit,ydm,mdm,qdm,'Massa barionica','Massa di materia oscura','10^10 Msun/h','10^10 Msun/h','log','log','x','r','b','FiguraDM_MassaBarionica_fitlineare.png')
 
 #SECONDO PUNTO: Grafico della distanza delle strutture dalla più massiva
-#Per visualizzare bene la distribuzione mettere l'asse y in scala logaritmica. L'asse x può essere lasciato in scala lineare.
 
-mask = np.where(total_mass == max(total_mass))[0]
-posxmax = float(posx[mask][0])
+mask = np.where(total_mass == max(total_mass))[0]   #Individuazione della struttura più massiva
+posxmax = float(posx[mask][0])                      #Individuazione della posizione della struttura più massiva
 posymax = float(posy[mask][0])
 poszmax = float(posz[mask][0])
 
-distance = np.sqrt(np.square(posx - posxmax) + np.square(posy - posymax) + np.square(posz - poszmax))
+distance = np.sqrt(np.square(posx - posxmax) + np.square(posy - posymax) + np.square(posz - poszmax)) #Distanza da massamax
 plot(distance,total_mass,'Distanza dalla struttura più massiva','Massa totale','ckpc/h','10^10 Msun/h','linear','log','x','r','FiguraDistanza_Massatotale_log_lin.png')
 plot(distance,total_mass,'Distanza dalla struttura più massiva','Massa totale','ckpc/h','10^10 Msun/h','log','log','x','r','FiguraDistanza_Massatotale_log_log.png')
 
 #TERZO PUNTO: Istogramma della distribuzione di materia oscura
 
-histo(np.log10(dm_mass),'logaritmo in base dieci della massa di materia oscura', 'istogramma.png')
+histo(np.log10(dm_mass),'materia oscura [10^10 Msun/h] in log10', 'istogramma.png')
 
 #QUARTO PUNTO: Distribuzione proiettata degli aloni
 
-gas_mass1 = np.where(gas_mass == 0.0, 10**(-5), gas_mass)
+gas_mass1 = np.where(gas_mass == 0.0, 10**(-5), gas_mass)               #Individuazione dei punti problematici
 stellar_mass1 = np.where(stellar_mass == 0.0, 10**(-5), stellar_mass)
 gasutile = np.log10(gas_mass1) + 5.0
 stellarutile = np.log10(stellar_mass1) + 5.0
 cmap = plt.get_cmap('viridis')
 norm = plt.Normalize(gasutile.min(), gasutile.max())
-line_colors = cmap(norm(gasutile))
-sizes = np.square(stellarutile)
+line_colors = cmap(norm(gasutile))                      #Creazione della scala colori in funzione della massa di gas
+sizes = np.square(stellarutile)                         #Creazione della scala di grandezze in funzione della massa stellare
 subplot(posx,posy,posz,sizes,line_colors)
 
 #QUINTO PUNTO: Grafico della massa del buco nero corrispondente alla struttura, in funzione della massa stellare
 
-mask = np.where(bh_mass > 8.0*10**(-5))[0]
+mask = np.where(bh_mass > 8.0*10**(-5))[0]  #Individuazione dei punti per il fit
 bhmass_fit = bh_mass[mask]
 stellarmass_fit = stellar_mass[mask]
 
-bhmass_fit = np.where(stellarmass_fit == 0.0,bhmass_fit[0],bhmass_fit)
-stellarmass_fit = np.where(stellarmass_fit == 0.0,stellarmass_fit[0],stellarmass_fit)
-
+mask = np.where(stellarmass_fit != 0.0)[0]  #Eliminazione dei punti problematici per il fit
+stellarmass_fit = stellarmass_fit[mask]
+bhmass_fit = bhmass_fit[mask]
 stellarmass_fit = np.log10(stellarmass_fit)
 bhmass_fit = np.log10(bhmass_fit)
 
-mbh,qbh = np.polyfit(stellarmass_fit,bhmass_fit,1)
+mbh,qbh = np.polyfit(stellarmass_fit,bhmass_fit,1)  #Fit lineare
 ybh = mbh*stellarmass_fit + qbh
+bhmass_fit = 10**(bhmass_fit)
 stellarmass_fit = 10**(stellarmass_fit)
 ybh = 10**(ybh)
 
-plot_con_fit(stellar_mass,bh_mass,stellarmass_fit,ybh,mbh,qbh,'Massa stellare','Massa del buco nero','10^10 Msun/h','10^10 Msun/h','log','log','.','b','r','FiguraBH_Massastellare.png')
+plot_con_fit(stellarmass_fit,bhmass_fit,stellarmass_fit,ybh,mbh,qbh,'Massa stellare','Massa del buco nero (Massa BH > 8 x 10^5 Msun/h)','10^10 Msun/h','10^10 Msun/h','log','log','.','b','r','FiguraBH_Massastellare.png')
 
 #SESTO PUNTO: Istogramma bidimensionale
-gas_mass2 = np.where(gas_mass == 0.0, 10**(-5), gas_mass)
-mask = np.where(gas_mass > 0.307)[0]
+mask = np.where(gas_mass > 0.307)[0]    #Individuazione dei 5 aloni per gli istogrammi
 gas_mass6 = gas_mass[mask]
 posx6 = posx[mask]
 posy6 = posy[mask]
@@ -230,20 +237,20 @@ distance6 = [[] for i in range(len(gas_mass6))]
 
 for i in range(len(gas_mass6)):
     distance6[i] = np.sqrt(np.square(posx-posx[i]) + np.square(posy - posy[i]) + np.square(posz - posz[i]))
+    #Calcolo delle distanze delle altre strutture da questi aloni
 
-largdist = np.amax(distance6)/50
-largmass = (max(np.log10(total_mass))-min(np.log10(total_mass)))/50
-binsdist = np.zeros(51)
-binsmass = np.zeros(51)
+nbins = 50
+largdist = np.amax(distance6)/nbins                                    #Generazione bins dell'istogramma
+largmass = (max(np.log10(total_mass))-min(np.log10(total_mass)))/nbins
+binsdist = np.zeros(nbins + 1)
+binsmass = np.zeros(nbins + 1)
 for i in range(len(binsdist)):
     binsdist[i] = i*largdist
     binsmass[i] = min(np.log10(total_mass)) + i*largmass
 
-for i in range(len(gas_mass6)):    
+for i in range(len(gas_mass6)): #Generazione degli istogrammi per i singoli aloni    
     istbid(np.log10(total_mass),distance6[i],binsmass,binsdist,'dell\'alone con massa di gas {} x 10^10 Msun/h'.format(gas_mass6[i]),'ist_bid_alone_{}.png'.format(i+1))
 
 masstot = np.repeat(np.log10(total_mass),5)
 disttot = np.concatenate((distance6[0],distance6[1],distance6[2],distance6[3],distance6[4]))
-istbid(masstot,disttot,binsmass,binsdist,'totale','ist_bid_totale.png')
-
-#h[0] sono i valori dell'istogramma delle masse. h[1] sono gli edges delle masse. h[2] sono gli edges delle distanze.
+istbid(masstot,disttot,binsmass,binsdist,'totale','ist_bid_totale.png') #Istogramma totale

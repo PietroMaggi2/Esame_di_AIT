@@ -3,10 +3,10 @@
 touch file1					#Creazione del file se non è già presente
 > file1						#Il file viene svuotato nel caso in cui esistesse già
 
-n=10
+n=10						#Numero massimo da considerare nella somma di interi
 for ((i=0 ; i<=$n ; i++))
 do
-	echo $i>>file1				#Si riempie il file con tutti i numeri interi da 1 a n
+	echo $i>>file1				#Si riempie il file con tutti i numeri interi da 0 a n
 done
 
 echo Somma ottenuta con il comando awk:

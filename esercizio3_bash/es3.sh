@@ -10,7 +10,7 @@ function file_count (){		#Questa funzione conta il numero di file presenti nella
 a=$((1 + $RANDOM % 10))		#Si generano due numeri interi casuali fra 1 e 10 per generare i file e le directory per il test
 b=$((1 + $RANDOM % 10))
 
-rm file*
+rm file*			#Si eliminano i file e le directory del test precedente per renderli indipendenti
 rmdir dir*
 
 for (( i = 1; i < $a; i++ ))	#Creazione dei file
