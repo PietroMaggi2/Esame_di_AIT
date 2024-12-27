@@ -13,12 +13,12 @@ b=$((1 + $RANDOM % 10))
 rm file*			#Si eliminano i file e le directory del test precedente per renderli indipendenti
 rmdir dir*
 
-for (( i = 1; i < $a; i++ ))	#Creazione dei file
+for (( i = 0; i < $a; i++ ))	#Creazione dei file
 do
 	touch file$i
 done
 
-for (( j = 1; j < $b; j++ ))	#Creazione delle directory
+for (( j = 0; j < $b; j++ ))	#Creazione delle directory
 do
 	mkdir dir$j
 done
