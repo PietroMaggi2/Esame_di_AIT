@@ -25,7 +25,9 @@ Visto che lo script viene eseguito in una cartella di prova ho deciso di far gen
 Il numero di file presenti (che in questo caso corrisponderà al numero casuale generato + 1, lo script) verrà stampato a schermo con la dicitura "il numero di file presenti in questa directory è:"
 
 NOTA: Alla prima esecuzione, vista l'assenza di files/directories di prova apparirà il seguente warning:
+
 rm: cannot remove 'file\*': No such file or directory   
+
 rmdir: failed to remove 'dir\*': No such file or directory
 
 ## Esercizio 4 di Bash
